@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171329">
+<title>BABAVXchange</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--bg:#f5f3fa;--ink:#211a35;--muted:#766f86;--purple:#35215d;--purple2:#6d45a6;--gold:#f2c45b;--white:#fff;--line:#e9e4f0;--green:#16794b;--red:#b43b48}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(135deg,#171329,#392360);color:#fff;padding:20px max(18px,calc((100% - 1050px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:5}
+.brand{font-weight:900;letter-spacing:.3px;font-size:21px}.brand span{color:var(--gold)}.tag{font-size:11px;color:#d7cce8;letter-spacing:1.5px}
+.wrap{max-width:1050px;margin:auto;padding:22px 16px 90px}.hero{background:linear-gradient(130deg,#2a1c49,#5a3687);color:white;border-radius:22px;padding:24px;display:flex;justify-content:space-between;gap:18px;align-items:center;box-shadow:0 12px 30px #24163b22}
+.hero h1{font-size:26px;margin:0 0 8px}.hero p{color:#e5dcef;margin:0;max-width:530px}.balance{background:#ffffff18;border:1px solid #ffffff30;padding:14px 18px;border-radius:15px;min-width:155px}.balance small{color:#ded3ef}.balance strong{display:block;font-size:24px;margin-top:4px}
+nav{display:flex;gap:8px;overflow:auto;padding:17px 0}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;white-space:nowrap;color:var(--ink);font-weight:650;cursor:pointer}.tab.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:0 4px 14px #25143a08}.card h3{margin:0 0 8px;font-size:16px}.muted{color:var(--muted)}.small{font-size:12px}.brandcard{display:flex;align-items:center;gap:12px}.logo{width:43px;height:43px;border-radius:13px;background:#f0eafa;display:grid;place-items:center;font-size:22px}
+section{display:none}section.active{display:block}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin:10px 0 14px}.sectionhead h2{margin:0;font-size:20px}
+button,.btn{border:0;border-radius:11px;background:var(--purple2);color:#fff;padding:11px 15px;font-weight:700;cursor:pointer}.btn.secondary,button.secondary{background:#f0ebf7;color:var(--purple)}button.danger{background:#fff0f1;color:var(--red)}button:disabled{opacity:.5;cursor:not-allowed}
+form{display:grid;gap:12px}label{display:grid;gap:6px;font-size:13px;font-weight:650}input,select,textarea{width:100%;border:1px solid #ded7e8;border-radius:10px;padding:11px 12px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:78px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}
+.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:11px;font-weight:750;background:#f1edf7;color:var(--purple)}.pill.pending{background:#fff4d8;color:#876000}.pill.approved{background:#e5f6ed;color:var(--green)}.pill.rejected{background:#ffeaec;color:var(--red)}
+.notice{background:#fff7df;border:1px solid #f3dfa5;color:#765400;padding:12px;border-radius:12px;font-size:13px;margin:14px 0}.empty{padding:26px;text-align:center;color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 0}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#211a35;color:white;padding:12px 18px;border-radius:12px;display:none;z-index:10;box-shadow:0 8px 25px #0003}
+@media(max-width:700px){.hero{display:block}.balance{margin-top:18px}.grid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.wrap{padding-top:15px}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}.brand{font-size:18px}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">BABA<span>V</span>Xchange</div><div class="tag">BUY • SELL • EXCHANGE</div></div><button class="secondary" id="accountBtn">Sign in</button></header>
+<main class="wrap">
+<div class="hero"><div><h1>Your gift cards, exchanged with confidence.</h1><p>Buy and sell popular gift cards. Submit your card for review and track every step from your account.</p></div><div class="balance"><small>Demo wallet balance</small><strong id="balance">₦0.00</strong><small>Sample balance only</small></div></div>
+<nav>
+<button class="tab active" data-tab="home">Overview</button><button class="tab" data-tab="sell">Sell a card</button><button class="tab" data-tab="buy">Buy cards</button><button class="tab" data-tab="activity">My activity</button><button class="tab" data-tab="admin">Admin demo</button>
+</nav>
+<section id="home" class="active">
+<div class="sectionhead"><h2>Popular gift cards</h2><span class="muted small">Illustrative rates</span></div>
+<div class="grid" id="popular"></div>
+<div class="notice"><b>Demo notice:</b> This prototype does not accept real gift card codes, move money, or verify cards. Use test details only. Live trading requires secure server-side verification and payment integration.</div>
+<div class="card"><h3>How it works</h3><div class="grid"><div><b>1. Submit</b><p class="muted small">Choose a card and add test details or an image.</p></div><div><b>2. Review</b><p class="muted small">Admin reviews submissions manually.</p></div><div><b>3. Payout</b><p class="muted small">Approved trades can be paid by bank transfer after live integration.</p></div></div></div>
+</section>
+<section id="sell">
+<div class="sectionhead"><h2>Submit a gift card</h2><span class="pill">Manual review</span></div>
+<div class="card"><form id="sellForm">
+<div class="row"><label>Gift card brand<select id="brand" required><option value="">Select brand</option><option>Apple</option><option>Amazon</option><option>Razer Gold</option><option>Steam</option><option>Google Play</option><option>PlayStation</option><option>Xbox</option></select></label><label>Card region<select id="region"><option>United States (USD)</option><option>United Kingdom (GBP)</option><option>Canada (CAD)</option><option>Europe (EUR)</option><option>Nigeria (NGN)</option></select></label></div>
+<div class="row"><label>Card amount<input id="amount" type="number" min="1" placeholder="e.g. 50" required></label><label>Currency<select id="currency"><option>USD</option><option>GBP</option><option>EUR</option><option>CAD</option></select></label></div>
+<label>Gift card code (use test data only)<input id="code" placeholder="Do not enter a real or active code"></label>
+<label>Upload card image<input id="photo" type="file" accept="image/*"></label>
+<label>Additional notes<textarea id="notes" placeholder="Any details the reviewer should know"></textarea></label>
+<button type="submit">Submit for admin review</button>
+</form></div>
+</section>
+<section id="buy">
+<div class="sectionhead"><h2>Buy gift cards</h2><span class="muted small">Demo catalogue</span></div><div class="grid" id="catalog"></div>
+<div class="notice">Purchases are simulated in this demo. No bank transfer or real gift card delivery is available yet.</div>
+</section>
+<section id="activity">
+<div class="sectionhead"><h2>My activity</h2><button class="secondary" id="exportBtn">Export demo records</button></div>
+<div class="card" id="activityList"><div class="empty">No submissions yet. Try the Sell a card tab.</div></div>
+</section>
+<section id="admin">
+<div class="sectionhead"><h2>Admin review desk</h2><span class="pill">Local demo only</span></div>
+<div class="notice">This demo admin area is not protected. Do not use it for real customer information or real card codes. Production admin access must require secure authentication and role permissions.</div>
+<div class="card"><h3>Set indicative rates (₦ per 1 USD card value)</h3><form id="rateForm"><div class="row"><label>Apple rate<input id="rateApple" type="number" value="1450"></label><label>Amazon rate<input id="rateAmazon" type="number" value="1400"></label></div><div class="row"><label>Razer Gold rate<input id="rateRazer" type="number" value="1380"></label><label>Other brands rate<input id="rateOther" type="number" value="1300"></label></div><label>Transaction fee (%)<input id="fee" type="number" min="0" max="20" step=".1" value="1"></label><button type="submit">Save demo rates</button></form></div>
+<div class="card" style="margin-top:14px"><h3>Pending submissions</h3><div id="reviewList" class="empty">No submissions to review.</div></div>
+</section>
+<footer>BABAVXchange • Prototype v0.1 • Demo data stays in this browser</footer>
+</main><div id="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+const defaults={Apple:1450,Amazon:1400,"Razer Gold":1380,Steam:1300,"Google Play":1300,PlayStation:1300,Xbox:1300};
+let rates=JSON.parse(localStorage.getItem('bv_rates')||'null')||defaults;
+let fee=Number(localStorage.getItem('bv_fee')||1);
+let submissions=JSON.parse(localStorage.getItem('bv_submissions')||'[]');
+let balance=Number(localStorage.getItem('bv_balance')||0);
+const money=n=>'₦'+Number(n).toLocaleString('en-NG',{minimumFractionDigits:2,maximumFractionDigits:2});
+function save(){localStorage.setItem('bv_rates',JSON.stringify(rates));localStorage.setItem('bv_fee',fee);localStorage.setItem('bv_submissions',JSON.stringify(submissions));localStorage.setItem('bv_balance',balance)}
+function toast(s){$('toast').textContent=s;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2600)}
+function renderCards(){let brands=Object.keys(defaults);$('popular').innerHTML=brands.slice(0,6).map(b=>`<div class="card brandcard"><div class="logo">🎁</div><div><b>${b}</b><div class="muted small">Indicative rate: ${money(rates[b]||rates.Other||1300)} / USD</div></div></div>`).join('');$('catalog').innerHTML=brands.map(b=>`<div class="card"><div class="brandcard"><div class="logo">🎁</div><div><b>${b}</b><div class="muted small">Digital gift card</div></div></div><p class="muted small">Choose this card to begin a demo purchase.</p><button class="secondary" onclick="toast('Demo only: checkout is not connected yet.')">View options</button></div>`).join('');$('balance').textContent=money(balance)}
+function renderActivity(){if(!submissions.length){$('activityList').innerHTML='<div class="empty">No submissions yet. Try the Sell a card tab.</div>';return}$('activityList').innerHTML='<table><thead><tr><th>Card</th><th>Amount</th><th>Status</th><th>Submitted</th></tr></thead><tbody>'+submissions.map(s=>`<tr><td>${s.brand}</td><td>${s.amount} ${s.currency}</td><td><span class="pill ${s.status.toLowerCase()}">${s.status}</span></td><td>${new Date(s.created).toLocaleDateString()}</td></tr>`).join('')+'</tbody></table>'}
+function renderAdmin(){let pending=submissions.filter(s=>s.status==='Pending');$('reviewList').innerHTML=pending.length?pending.map(s=>`<div class="card" style="margin:10px 0"><b>${s.brand}</b> · ${s.amount} ${s.currency}<p class="muted small">Region: ${s.region} · Submitted ${new Date(s.created).toLocaleString()}</p><p class="small">Code supplied: ${s.hasCode?'Yes (masked)':'No'} · Image: ${s.hasPhoto?'Attached locally':'No'}</p><div style="display:flex;gap:8px"><button onclick="review('${s.id}','Approved')">Approve</button><button class="danger" onclick="review('${s.id}','Rejected')">Reject</button></div></div>`).join(''):'<div class="empty">No submissions to review.</div>'}
+window.review=(id,status)=>{let s=submissions.find(x=>x.id===id);if(!s)return;s.status=status;save();renderActivity();renderAdmin();toast('Submission marked '+status+'. Demo only; no payout sent.')};
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('main section').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));if(b.dataset.tab==='admin')renderAdmin()}));
+$('sellForm').addEventListener('submit',e=>{e.preventDefault();let f=$('photo').files[0];let item={id:crypto.randomUUID(),brand:$('brand').value,region:$('region').value,amount:Number($('amount').value),currency:$('currency').value,hasCode:!!$('code').value,hasPhoto:!!f,notes:$('notes').value,status:'Pending',created:new Date().toISOString()};submissions.unshift(item);save();e.target.reset();renderActivity();renderAdmin();toast('Submitted for manual review. Demo record saved.');document.querySelector('[data-tab="activity"]').click()});
+$('rateForm').addEventListener('submit',e=>{e.preventDefault();rates.Apple=Number($('rateApple').value);rates.Amazon=Number($('rateAmazon').value);rates['Razer Gold']=Number($('rateRazer').value);rates.Other=Number($('rateOther').value);fee=Number($('fee').value);save();renderCards();toast('Demo rates saved on this device.')});
+$('exportBtn').addEventListener('click',()=>{let blob=new Blob([JSON.stringify(submissions,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='babavxchange-demo-records.json';a.click();URL.revokeObjectURL(a.href)});
+$('accountBtn').addEventListener('click',()=>toast('Account sign-in is a planned production feature.'));
+$('rateApple').value=rates.Apple||1450;$('rateAmazon').value=rates.Amazon||1400;$('rateRazer').value=rates['Razer Gold']||1380;$('rateOther').value=rates.Other||1300;$('fee').value=fee;
+renderCards();renderActivity();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
