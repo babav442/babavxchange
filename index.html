@@ -90,4 +90,11 @@ $('rateApple').value=rates.Apple||1450;$('rateAmazon').value=rates.Amazon||1400;
 renderCards();renderActivity();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
-</body></html>
+</body></html><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  window.supabaseClient = window.supabase.createClient(
+    'https://ovdxgoliprzctispjeid.supabase.co/rest/v1/',
+    'sb_publishable_i_Rjd2S6YWrznRZaooqM0A_QicqyaBZ'
+  );
+</script>
