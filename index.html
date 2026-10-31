@@ -89,12 +89,12 @@ $('accountBtn').addEventListener('click',()=>toast('Account sign-in is a planned
 $('rateApple').value=rates.Apple||1450;$('rateAmazon').value=rates.Amazon||1400;$('rateRazer').value=rates['Razer Gold']||1380;$('rateOther').value=rates.Other||1300;$('fee').value=fee;
 renderCards();renderActivity();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
-</script>
-</body></html><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 
 <script>
   window.supabaseClient = window.supabase.createClient(
-    'https://ovdxgoliprzctispjeid.supabase.co/rest/v1/',
+    'https://ovdxgoliprzctispjeid.supabase.co',
     'sb_publishable_i_Rjd2S6YWrznRZaooqM0A_QicqyaBZ'
   );
 </script>
